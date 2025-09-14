@@ -87,8 +87,19 @@ class ProfileCog(Extension):
                 return
             
             embed = self.svc.format_profile_embed(user_data, target_user)
-
-            await ctx.send(embed=embed)
+            
+            # Добавляем кнопку обновления для всех профилей
+            buttons = [
+                Button(
+                    style=ButtonStyle.SECONDARY,
+                    label="🔄 Обновить",
+                    custom_id="profile_refresh"
+                )
+            ]
+            action_row = ActionRow(*buttons)
+            
+            msg = await ctx.send(embed=embed, components=[action_row])
+            self._profile_users[msg.id] = target_user_id
             
         except Exception as e:
             await ctx.send(f"❌ Ошибка: {str(e)}", ephemeral=True)
@@ -215,11 +226,6 @@ class ProfileCog(Extension):
                 await ctx.send("❌ Не удалось определить пользователя", ephemeral=True)
                 return
             
-            # Проверяем, что кнопку нажал владелец профиля
-            if ctx.author.id != user_id:
-                await ctx.send("❌ Вы можете изменять только свой профиль!", ephemeral=True)
-                return
-            
             # Получаем обновленные данные
             user_data = await self.svc.get_user_profile(user_id)
             
@@ -235,13 +241,8 @@ class ProfileCog(Extension):
             
             embed = self.svc.format_profile_embed(user_data, user)
             
-            # Создаем кнопки для редактирования
+            # Создаем только кнопку обновления (как в profile show)
             buttons = [
-                Button(
-                    style=ButtonStyle.PRIMARY,
-                    label="🎂 Установить день рождения",
-                    custom_id="profile_set_birthday"
-                ),
                 Button(
                     style=ButtonStyle.SECONDARY,
                     label="🔄 Обновить",
