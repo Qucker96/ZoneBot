@@ -84,7 +84,7 @@ class BirthdayService:
 def setup_birthday_tasks(bot: interactions.Client, birthday_service: BirthdayService) -> None:
     """Настраивает фоновые задачи для проверки дней рождения"""
     
-    @Task.create(CronTrigger(hour=10, minute=0, timezone="Europe/Moscow"))
+    @Task.create(CronTrigger("0 10 * * *", tz="Europe/Moscow"))
     async def birthday_check_task():
         """Задача для проверки дней рождения в 10:00 по МСК"""
         await birthday_service.check_and_send_birthdays(bot)
