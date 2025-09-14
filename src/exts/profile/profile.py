@@ -122,8 +122,8 @@ class ProfileCog(Extension):
             
             action_row = ActionRow(*buttons)
             
-            # Отправляем embed с кнопками
-            msg = await ctx.send(embed=embed, components=[action_row])
+
+            msg = await ctx.send(embed=embed, components=[action_row], ephemeral=True)
             self._profile_users[msg.id] = ctx.author.id
             
         except Exception as e:
