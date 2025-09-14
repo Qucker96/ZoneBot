@@ -1,0 +1,12 @@
+[project]
+name = "zonebot"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "discord-py-interactions>=5.15.0",
+    "python-dotenv>=1.1.1",
+    "pytz>=2025.2",
+    "tomli-w>=1.2.0",
+]
